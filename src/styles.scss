@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+$app-font-familiy:Arial, Helvetica, sans-serif;
+$app-font-color:whitesmoke;
+$app-main-color-focus:rgb(226, 108, 108); 
+$app-main-color-rest:rgb(141, 184, 169);
+.pomodoro_focus{
+    background-color: $app-main-color-focus; 
+    color: $app-font-color !important;   
+}
+.pomodoro_rest{
+    background-color: $app-main-color-rest;
+    color: $app-font-color !important;
+}
+.main-page{
+    min-height: 47rem;
+    min-width: 100%;
+    font-weight: 600;
+    color: $app-font-color !important;
+}
+.divisor-line{
+    background-color: $app-font-color;
+    max-height: 1px;
+}
+
+.navbar-text-main{
+    color: $app-font-color !important;
+    font-size: 2.0em !important;
+}
+.navbar-text-item{
+    color: $app-font-color !important;
+    font-size: 1.4em !important;
+}
+.timer_focus{
+    background-color: rgb(216, 124, 124);
+    color: $app-font-color !important;
+}
+.timer_rest{
+    background-color: rgb(125, 179, 160);
+    color: $app-font-color !important;
+}
+.img{
+    max-width: 5rem;
+    max-height: 5rem;
+}
+.stage_selected_focus{
+    background-color:rgb(216, 83, 83);  ;
+}
+.stage_selected_rest{
+    background-color: rgb(90, 159, 134);
+}
+.work_stage{
+    max-height: 1.7rem;
+}
+.btn-custom{
+    width: 10rem;
+}
+.text_focus{
+    font-family: $app-font-familiy !important;
+    font-weight: 500 !important;
+    font-size: 1.15rem !important;
+    color: $app-main-color-focus !important;
+}
+.text_rest{
+    font-family: $app-font-familiy !important;
+    font-weight: 500 !important;
+    font-size: 1.15rem !important;
+    color: $app-main-color-rest !important;
+}

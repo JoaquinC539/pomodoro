@@ -1,0 +1,50 @@
+<div class="card" style="width: 22rem" [ngClass]="currentInternalPomodoroClass">
+  <div class="card-body" [ngClass]="currentInternalPomodoroClass">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center ">
+          <div class="flex-fill d-flex justify-content-center work_stage" [ngClass]="{'stage_selected_focus':focus}"><p>Focus</p></div>
+          <div class="flex-fill d-flex justify-content-center work_stage" [ngClass]="{'stage_selected_rest':srest}"><p>Short Break<p></div>
+          <div class="flex-fill d-flex justify-content-center work_stage" [ngClass]="{'stage_selected_rest':lrest}"><p>Long Break</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-12" style="font-size: 5rem;">
+            <p class="text-center">{{timerInScreen}}</p>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8 d-flex justify-content-center">
+          @if(timerStarted){
+            <button class="btn btn-light  text-center " (click)="pauseTimer()" [ngClass]="currentButtonTextClass" style="width: 8rem;height: 2rem;">Pause</button>
+          }@else {
+            <button class="btn btn-light  text-center " (click)="startTimer()" [ngClass]="currentButtonTextClass" style="width: 8rem;height: 2rem;">Start</button>
+          }
+          
+        </div>
+        <div class="col-4 d-flex justify-content-center ">
+          <button class="btn btn-light text-center " (click)="passTimer()" [ngClass]="currentButtonTextClass" style=" height: 2rem;">            
+            Next
+          </button>
+        </div>
+    </div>
+  </div>
+  
+</div>
+<br>
+<div class="row" >
+  <div class="col-12" >
+    <div class="d-flex justify-content-center">
+      @if(dateHour!==undefined){
+        <p>Pomodoro counts: {{dateHour.pomoCounter}}</p>
+      }
+      
+    </div>
+    
+  </div>
+</div>
+
+
+
