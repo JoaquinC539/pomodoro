@@ -39,12 +39,14 @@
     <div class="d-flex justify-content-center">
       @if(dateHour!==undefined){
         <p>Pomodoro counts: {{dateHour.pomoCounter}}</p>
-      }
-      
+      }      
     </div>
     
   </div>
 </div>
+
+
+<app-modal-timer (changedSettings)="refreshTimers($event)"></app-modal-timer>
 
 
 

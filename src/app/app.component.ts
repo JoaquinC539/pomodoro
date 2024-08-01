@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from "./components/nav/nav.component";
 import { TimerComponent } from "./components/timer/timer.component";
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
@@ -12,12 +13,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  
   currentPomodoroClass:string="pomodoro_focus";
 
   getPomodoroClass($event:string){
     
     this.currentPomodoroClass=$event;
   }
+  
 
   
 }

@@ -65,3 +65,10 @@ $app-main-color-rest:rgb(141, 184, 169);
     font-size: 1.15rem !important;
     color: $app-main-color-rest !important;
 }
+.modal {
+    background: rgba(0,0,0,0.5);
+  }
+  
+  .modal-dialog {
+    margin-top: 10%;
+  }

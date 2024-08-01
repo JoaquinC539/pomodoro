@@ -1,0 +1,78 @@
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  style="color: black"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Pomodoro Timer Settings
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form [formGroup]="durationForm" (submit)="submitForm($event)">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="focusDuration" class="form-label"
+                >Minutes of focus
+                <input
+                  type="number"
+                  class="form-control"
+                  id="focusDuration"
+                  formControlName="focus"
+                />
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="shortDuration" class="form-label"
+                >Minutes of short rest
+                <input
+                  type="number"
+                  class="form-control"
+                  id="shortDuration"
+                  formControlName="short"
+                />
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="longDuration" class="form-label"
+                >Minutes of long rest
+                <input
+                  type="number"
+                  class="form-control"
+                  id="longDuration"
+                  formControlName="long"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -4,12 +4,16 @@ import { CommonModule } from '@angular/common';
 import { DbService } from '../../services/db.service';
 import { Timer } from '../../interfaces/Timer';
 import { MetaData } from '../../interfaces/MetdaData';
+import { Title } from '@angular/platform-browser';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ModalTimerComponent } from "./modal-timer/modal-timer.component";
+import { InitService } from '../../services/init.service';
 
 
 @Component({
   selector: 'app-timer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, ModalTimerComponent],
   templateUrl: './timer.component.html',
   styleUrl: './timer.component.scss'
 })
@@ -28,8 +32,9 @@ export class TimerComponent  implements OnInit{
   timers:Array<Timer>|undefined;
   dateHour:MetaData|undefined;
   timerStarted:boolean
+  durationForm:FormGroup;
 
-  constructor(private _dbService:DbService ){
+  constructor(private _dbService:DbService,private titleService:Title,private _initService:InitService ){
     this.currentPomodoroClass="pomodoro_focus";
     this.currentInternalPomodoroClass="timer_focus"
     this.currentButtonTextClass=PomodoroClass.text_focus
@@ -40,13 +45,20 @@ export class TimerComponent  implements OnInit{
     this.timerStarted=false;    
     this.timerSeconds=25*60;    
     this.timerInScreen=this.secondsToTimer(this.timerSeconds);
+    this.durationForm=new FormGroup({
+      focus:new FormControl(),
+      short:new FormControl(),
+      long:new FormControl()
+    })
+    
     
   }
   async ngOnInit(): Promise<void> {
+    await this.checkAndUpdateDate();  
     await this.checkAndSetDefaultTimers();
-    await this.checkAndUpdateDate();    
+    this._initService.setParentInitialized();    
     this.setTimerView();
-
+    
   }
   public sendClass(pomodoro_class:string){
     this.currentPomodoroClass=pomodoro_class;
@@ -76,6 +88,7 @@ export class TimerComponent  implements OnInit{
     this.timerStarted=true;
     this.timerInteval=setInterval(()=>{
       this.timerInScreen=this.secondsToTimer(this.timerSeconds);
+      this.titleService.setTitle(this.timerInScreen);
       this.timerSeconds--;
       if(this.timerSeconds<=0){
         clearInterval(this.timerInteval);
@@ -87,17 +100,18 @@ export class TimerComponent  implements OnInit{
     this.playSnap()
     this.timerStarted=false;
     clearInterval(this.timerInteval);
+    this.titleService.setTitle("Pomodoro Timer")
     
   }
   public async passTimer(){
     this.timerStarted=false;
     clearInterval(this.timerInteval);
-    this.timerStarted=false;
-    
+    this.timerStarted=false;    
     await this.handleStageChange();    
   }
   
   public async handleStageChange(){
+    this.titleService.setTitle("Pomodoro Timer")
     let pomoCounter=this.dateHour!.pomoCounter;    
     if(this.focus){
       this.playChimes();        
@@ -151,14 +165,15 @@ export class TimerComponent  implements OnInit{
 
   }
   public setTimerView(){
+
     if(this.focus){
       this.timerSeconds=this.timers?.find(t=>t.name==="focus")?.durationInSeconds!;
     }else if(this.srest){
       this.timerSeconds=this.timers?.find(t=>t.name==="srest")?.durationInSeconds!;
     }else{
       this.timerSeconds=this.timers?.find(t=>t.name==="lrest")?.durationInSeconds!;
-    }
-    this.timerInScreen=this.secondsToTimer(this.timerSeconds);
+    }    
+    this.timerInScreen=this.secondsToTimer(this.timerSeconds);    
   }
   
 
@@ -167,7 +182,7 @@ export class TimerComponent  implements OnInit{
     const today=this._dbService.getFormattedDate(new Date());
     if(metadate!==undefined){      
       if(today!==metadate.date){
-        this._dbService.setDate(today,1);
+        await this._dbService.setDate(today,1);
         this.dateHour=await this._dbService.getDate();
       }else{
         this.dateHour=metadate;
@@ -190,6 +205,12 @@ export class TimerComponent  implements OnInit{
     const audio=new Audio("/drum.wav");
     audio.play();
   }
+  public async refreshTimers($event:Timer[]):Promise<void>{
+    this.pauseTimer();
+    this.timers=$event;
+    this.setTimerView();
+  }
+  
 
 
 

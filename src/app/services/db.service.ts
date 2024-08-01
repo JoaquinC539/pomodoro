@@ -56,6 +56,17 @@ export class DbService extends Dexie {
   async addTimer(timer:Timer): Promise<void> {
     await this.timers.add(timer)
   }
+ updatetimers(timers:Timer[]):void{
+  timers.forEach(async (timer)=>{
+    const timerFetch=await this.timers.where('name').equals(timer.name).first();
+    if(timerFetch!==undefined){      
+      timerFetch.durationInSeconds=timer.durationInSeconds;
+      await this.timers.put(timerFetch);
+    }
+    
+    
+  })
+ }
 
   public getFormattedDate(currentDate: Date): string {
     const day = currentDate.getDate();
