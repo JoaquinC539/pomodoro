@@ -3,12 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { NavComponent } from "./components/nav/nav.component";
 import { TimerComponent } from "./components/timer/timer.component";
 import { CommonModule } from '@angular/common';
+import { DescriptionComponent } from "./components/description/description.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavComponent, TimerComponent,CommonModule],
+  imports: [RouterOutlet, NavComponent, TimerComponent, CommonModule, DescriptionComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

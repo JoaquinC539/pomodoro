@@ -16,6 +16,12 @@ $app-main-color-rest:rgb(141, 184, 169);
     font-weight: 600;
     color: $app-font-color !important;
 }
+.sub-main-page{
+    min-height: 15rem;
+    min-width: 100%;
+    font-weight: 600;
+    // color: $app-font-color !important;
+}
 .divisor-line{
     background-color: $app-font-color;
     max-height: 1px;
@@ -72,3 +78,8 @@ $app-main-color-rest:rgb(141, 184, 169);
   .modal-dialog {
     margin-top: 10%;
   }
+.text-description{
+    max-width: 600px; 
+    margin: 0 auto;
+    text-align: center;  
+}

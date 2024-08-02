@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Timer } from '../interfaces/Timer';
 import Dexie, { Table } from 'dexie';
 import { MetaData } from '../interfaces/MetdaData';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Platform } from '@angular/cdk/platform';
 
 
 
@@ -14,12 +16,18 @@ export class DbService extends Dexie {
 
 
 
-  constructor() {
-    super("pomodoroSettings")
-    this.version(3).stores({
-      timers: "++id,name",
-      metadate: "++id"
-    });
+  constructor(@Inject (PLATFORM_ID) private platform_id:Object) {
+    
+    super("pomodoroSettings")     
+    if(isPlatformBrowser(platform_id)){
+      
+      this.version(3).stores({
+        timers: "++id,name",
+        metadate: "++id"
+      });
+    }
+    
+    
   }
 
   async setDate(date: string, pomoCounter: number) {

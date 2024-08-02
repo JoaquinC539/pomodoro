@@ -1,6 +1,6 @@
-import { Component, Output,EventEmitter, OnInit } from '@angular/core';
+import { Component, Output,EventEmitter, OnInit, afterNextRender, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { PomodoroClass } from '../../enumerables/pomodoroClass';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DbService } from '../../services/db.service';
 import { Timer } from '../../interfaces/Timer';
 import { MetaData } from '../../interfaces/MetdaData';
@@ -17,7 +17,7 @@ import { InitService } from '../../services/init.service';
   templateUrl: './timer.component.html',
   styleUrl: './timer.component.scss'
 })
-export class TimerComponent  implements OnInit{
+export class TimerComponent  implements OnInit,AfterViewInit{
   @Output() classEvent=new EventEmitter<string>();
   currentPomodoroClass:string;
   currentInternalPomodoroClass:string;
@@ -34,7 +34,8 @@ export class TimerComponent  implements OnInit{
   timerStarted:boolean
   durationForm:FormGroup;
 
-  constructor(private _dbService:DbService,private titleService:Title,private _initService:InitService ){
+  constructor(private _dbService:DbService,private titleService:Title,private _initService:InitService, 
+    @Inject(PLATFORM_ID) private platform_id:Object){
     this.currentPomodoroClass="pomodoro_focus";
     this.currentInternalPomodoroClass="timer_focus"
     this.currentButtonTextClass=PomodoroClass.text_focus
@@ -54,10 +55,16 @@ export class TimerComponent  implements OnInit{
     
   }
   async ngOnInit(): Promise<void> {
-    await this.checkAndUpdateDate();  
+    
+      
+  }
+  async ngAfterViewInit(): Promise<void> {
+    if(isPlatformBrowser(this.platform_id)){
+      await this.checkAndUpdateDate();  
     await this.checkAndSetDefaultTimers();
     this._initService.setParentInitialized();    
     this.setTimerView();
+    }
     
   }
   public sendClass(pomodoro_class:string){
@@ -117,6 +124,7 @@ export class TimerComponent  implements OnInit{
       this.playChimes();        
       this.focus=false;
       this.rest=true;
+      this.changeIcon("tomato-blue.ico")
       if(pomoCounter%4===0){ 
         this.lrest=true;
         this.srest=false;
@@ -127,6 +135,7 @@ export class TimerComponent  implements OnInit{
       }
     }else{
       this.playDrum();
+      this.changeIcon("tomato-red.ico")
       await this._dbService.updateCounterPlusOne();
       this.dateHour!.pomoCounter++;
       this.focus=true;
@@ -209,6 +218,12 @@ export class TimerComponent  implements OnInit{
     this.pauseTimer();
     this.timers=$event;
     this.setTimerView();
+  }
+  public changeIcon(iconName:string){
+    const link:HTMLLinkElement|null=document.querySelector("link[rel='icon']");    
+    if(link!==null){
+      link.setAttribute("href",iconName);
+    }
   }
   
 
